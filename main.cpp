@@ -24,7 +24,7 @@ vector<Token> tokenize(const string& line) {
         //ignore whitespace
         if (isspace(line[i])) {
             i++;
-            //continue
+            continue;
         }
         if (isdigit(line[i])) {
             string num;
@@ -48,7 +48,7 @@ bool isOperator(const string& s) {
 
 int precedence(const string& op) {
     // TODO
-    if (op == "+" || op == "/") {
+    if (op == "*" || op == "/") {
         return 2;
     }
     if (op=="+" || op=="-") {
@@ -57,16 +57,93 @@ int precedence(const string& op) {
     return 0;
 }
 
+bool isNumber(const string& s) {
+    if (s.empty()) {
+        return false;
+    }
+    for (char c : s) {
+        if (!isdigit(c)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Detection
 
 bool isValidPostfix(const vector<Token>& tokens) {
     // TODO
-    return false;
+    if (tokens.empty()) {
+        return false;
+    }
+    int depth =0;
+    for (const Token& token : tokens) {
+        if (token.value == "(" || token.value == ")") {
+            return false;
+        }
+        if (isNumber(token.value)) {
+            depth++;
+        } else if (isOperator(token.value)) {
+            if (depth<2) return false;
+            depth--;
+        } else {
+            return false;
+        }
+
+    } return depth == 1;
+
 }
 
 bool isValidInfix(const vector<Token>& tokens) {
     // TODO
-    return false;
+    if (tokens.empty()) {
+        return false;
+    }
+    bool hasOp = false;
+    for (const Token& token : tokens) {
+        if (isOperator(token.value)) {
+            hasOp = true;
+            break;
+        }
+    }
+    if (!hasOp) {
+        return false;
+    }
+    // unrecognized token check
+    for (const Token& token : tokens) {
+        if (!isNumber(token.value)&& !isOperator(token.value) && token.value != "(" && token.value != ")") {
+            return false;
+        }
+    }
+    //track unmatched open parens
+    ArrayStack<string> parenthesisStack;
+    //expect open paren or number
+    bool expectOperator = false;
+
+    for (const Token& token : tokens) {
+        if (!expectOperator) {
+            if (isNumber(token.value)) {
+                expectOperator = true;
+            }
+            else if (token.value == "(") {
+                parenthesisStack.push("(");
+            }
+            else {
+                return false;
+            }
+
+        } else {
+            if (isOperator(token.value)) {
+                expectOperator = false;
+            } else if (token.value == ")") {
+                if (parenthesisStack.empty()) return false;
+                parenthesisStack.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+    return expectOperator && parenthesisStack.empty();
 }
 
 // Conversion
