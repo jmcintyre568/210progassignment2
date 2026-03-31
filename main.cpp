@@ -150,16 +150,67 @@ bool isValidInfix(const vector<Token>& tokens) {
 
 vector<Token> infixToPostfix(const vector<Token>& tokens) {
     vector<Token> output;
-    // TODO
+    ArrayStack<Token> operatorStack;
+    for (const Token& token : tokens) {
+        if (isNumber(token.value)) {
+            output.push_back(token);
+        } else if (isOperator(token.value)) {
+            while (!operatorStack.empty() && isOperator(operatorStack.top().value) && precedence(operatorStack.top().value) >= precedence(token.value)) {
+                output.push_back(operatorStack.top());
+                operatorStack.pop();
+            }
+            operatorStack.push(token);
+        } else if (token.value == "(") {
+            operatorStack.push(token);
+        }
+        else if (token.value == ")") {
+            while (!operatorStack.empty() && operatorStack.top().value != "(") {
+                output.push_back(operatorStack.top());
+                operatorStack.pop();
+            }
+            if (!operatorStack.empty()) {
+                operatorStack.pop();
+            }
+        }
+
+    }
+    while (!operatorStack.empty()) {
+        output.push_back(operatorStack.top());
+        operatorStack.pop();
+    }
     return output;
+
+
+
+    // TODO
+
 }
 
 // Evaluation
 
 double evalPostfix(const vector<Token>& tokens) {
     ArrayStack<double> stack;
+    for (const Token& token : tokens) {
+        if (isNumber(token.value)) {
+            stack.push(stod(token.value));
+        } else if (isOperator(token.value)) {
+            double rightop = stack.top();
+            stack.pop();
+            double leftop = stack.top();
+            stack.pop();
+            if (token.value == "+") {
+                stack.push(leftop + rightop);
+            } else if (token.value == "-") {
+                stack.push(leftop - rightop);
+            } else if (token.value == "*") {
+                stack.push(leftop * rightop);
+            } else if (token.value == "/") {
+                stack.push(leftop / rightop);
+            }
+        }
+    }
     // TODO
-    return 0.0;
+    return stack.top();
 }
 
 // Main
