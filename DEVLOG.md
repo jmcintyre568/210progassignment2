@@ -29,6 +29,7 @@ Each entry may be one of the following:
 
 
 ### Entry 1
+3/24
 **Entry Type:** 
 **Task worked on: Engineering decision **
 **Issue or decision: Designing ArrayStack<T> error handling**
@@ -38,6 +39,7 @@ Each entry may be one of the following:
 **Commit(s):** implement ArrayStack
 
 ### Entry 2
+3/24
 **Entry Type: Bug Fix **
 **Task worked on: precedence he;per function**
 **Issue or decision:* and / were not higher precendence than + and -. During conversion, 3+4*2 produced incorrect postfix order** 
@@ -47,6 +49,7 @@ Each entry may be one of the following:
 **Commit(s):** fix precendence operator
 
 ### Entry 3
+3/31
 **Entry Type:Bug Fix**
 **Task worked on: isValidPostfix()**
 **Issue or decision:Every expression classified as NEITHER instad of POSTFIX**
@@ -56,10 +59,11 @@ Each entry may be one of the following:
 **Commit(s):** fixed helper classes
 
 ### Entry 4
+3/31
 **Entry Type: Engineering Decision**
 **Task worked on: Outputting format for number results**
 **Issue or decision:evalPostfix returns doubles**
 **Error message / symptom (if applicable): bad output**
 **What I tried: At first I thought cout << fixed << setprecision(0) would work but that makes every result an integer which would break math that results in a double. **
-**Fix / resolution (or final decision): I wrote printOut() helper that casts the double into a long long and compares the 2 numbers. If they match ir prints as an int else it prints as a decimal**
+**Fix / resolution (or final decision): I wrote printOut() helper that casts the double into a long long and compares the 2 numbers. If they match it prints as an int else it prints as a decimal**
 **Commit(s):** Added helpers
