@@ -74,7 +74,7 @@ bool isNumber(const string& s) {
 void printOut(double val) {
     //if value is whole print as int
     if (val==static_cast<long long >(val)) {
-        cout << static_cast<long long >(val) << endl;
+        cout << static_cast<long long >(val);
     } else {
         cout << val << endl;
     }
@@ -234,7 +234,7 @@ int main() {
 
     if (isValidPostfix(tokens)) {
         cout << "FORMAT: POSTFIX\n";
-        cout << "RESULT: " << evalPostfix(tokens) << "\n";
+        cout << "RESULT: ";
         printOut(evalPostfix(tokens));
         cout << "\n" << endl;
     }
@@ -243,11 +243,11 @@ int main() {
         cout << "FORMAT: INFIX\n";
         cout << "POSTFIX: ";
         for (int i=0; i<(int)postfix.size(); i++) {
-            if (i>0) cout << ", ";
+            if (i>0) cout << " ";
             cout << postfix[i].value;
         }
         cout << "\n";
-        cout << "RESULT: " << evalPostfix(postfix) << "\n";
+        cout << "RESULT: ";
         printOut(evalPostfix(postfix));
         cout << "\n" << endl;
     }
