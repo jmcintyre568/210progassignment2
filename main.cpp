@@ -15,7 +15,7 @@ struct Token {
 };
 
 // Tokenizer
-
+//breaks input into tokens
 vector<Token> tokenize(const string& line) {
     vector<Token> tokens;
     // TODO
@@ -26,6 +26,7 @@ vector<Token> tokenize(const string& line) {
             i++;
             continue;
         }
+        //multi digit int case
         if (isdigit(line[i])) {
             string num;
             while (i<(int)line.size() && isdigit(line[i])) {
@@ -33,6 +34,7 @@ vector<Token> tokenize(const string& line) {
             }
             tokens.push_back(Token{num});
         }
+        //single characters
         else {
             tokens.push_back({string(1, line[i++])});
         }
@@ -56,7 +58,7 @@ int precedence(const string& op) {
     }
     return 0;
 }
-
+//returns true if string is non negative int
 bool isNumber(const string& s) {
     if (s.empty()) {
         return false;
@@ -69,8 +71,17 @@ bool isNumber(const string& s) {
     return true;
 }
 
-// Detection
+void printOut(double val) {
+    //if value is whole print as int
+    if (val==static_cast<long long >(val)) {
+        cout << static_cast<long long >(val) << endl;
+    } else {
+        cout << val << endl;
+    }
+}
 
+// Detection
+//each number is +1 depth each operator requires depth to be 2 or greater and reduces by 1; no parens allowed
 bool isValidPostfix(const vector<Token>& tokens) {
     // TODO
     if (tokens.empty()) {
@@ -224,16 +235,21 @@ int main() {
     if (isValidPostfix(tokens)) {
         cout << "FORMAT: POSTFIX\n";
         cout << "RESULT: " << evalPostfix(tokens) << "\n";
+        printOut(evalPostfix(tokens));
+        cout << "\n" << endl;
     }
     else if (isValidInfix(tokens)) {
         vector<Token> postfix = infixToPostfix(tokens);
         cout << "FORMAT: INFIX\n";
         cout << "POSTFIX: ";
-        for (const auto& t : postfix) {
-            cout << t.value << " ";
+        for (int i=0; i<(int)postfix.size(); i++) {
+            if (i>0) cout << ", ";
+            cout << postfix[i].value;
         }
         cout << "\n";
         cout << "RESULT: " << evalPostfix(postfix) << "\n";
+        printOut(evalPostfix(postfix));
+        cout << "\n" << endl;
     }
     else {
         cout << "FORMAT: NEITHER\n";
